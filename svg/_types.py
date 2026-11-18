@@ -1,11 +1,10 @@
 from __future__ import annotations
-from datetime import datetime
 
 import math
 from dataclasses import dataclass
-from datetime import timedelta
+from datetime import datetime, timedelta
 from decimal import Decimal
-
+from fractions import Fraction
 from typing import TYPE_CHECKING, Union
 
 
@@ -13,7 +12,7 @@ if TYPE_CHECKING:
     from typing_extensions import Literal
 
 
-Number = Union[Decimal, float, int]
+Number = Union[Decimal, float, int, Fraction]
 
 
 @dataclass

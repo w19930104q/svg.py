@@ -1,14 +1,17 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from datetime import datetime, timedelta
 from enum import Enum
 from typing import TYPE_CHECKING, Any, ClassVar
-from datetime import timedelta, datetime
 
 from . import _mixins as m
 from ._path import PathData
-from ._transforms import Transform
-from ._types import Length, Number, PreserveAspectRatio, ViewBoxSpec, to_clock_value, to_wallclock_sync_value, Point
+from ._transforms import Transform, TransformableMixin
+from ._types import (
+    Length, Number, Point, PreserveAspectRatio, ViewBoxSpec, to_clock_value,
+    to_wallclock_sync_value,
+)
 
 
 if TYPE_CHECKING:
@@ -157,6 +160,7 @@ class SVG(
 
 @dataclass
 class G(
+    TransformableMixin,
     Element,
     m.GraphicsElementEvents,
     m.Color,
@@ -184,6 +188,7 @@ class G(
 
 @dataclass
 class Defs(
+    TransformableMixin,
     Element,
     m.Color,
     m.GraphicsElementEvents,
@@ -249,6 +254,7 @@ class Symbol(
 
 @dataclass
 class Image(
+    TransformableMixin,
     Element,
     m.Color,
     m.Graphics,
@@ -280,7 +286,7 @@ class Image(
 
 
 @dataclass
-class Switch(Element, m.Color, m.GraphicsElementEvents):
+class Switch(TransformableMixin, Element, m.Color, m.GraphicsElementEvents):
     """
     https://developer.mozilla.org/en-US/docs/Web/SVG/Element/switch
     """
@@ -317,7 +323,7 @@ class _FigureElement(m.Color, m.GraphicsElementEvents, m.Graphics, m.FillStroke)
 
 
 @dataclass
-class Path(Element, _FigureElement):
+class Path(TransformableMixin, Element, _FigureElement):
     """
     https://developer.mozilla.org/en-US/docs/Web/SVG/Element/path
     """
@@ -337,7 +343,7 @@ class Path(Element, _FigureElement):
 
 
 @dataclass
-class Rect(Element, _FigureElement):
+class Rect(TransformableMixin, Element, _FigureElement):
     """
     https://developer.mozilla.org/en-US/docs/Web/SVG/Element/rect
     """
@@ -360,7 +366,7 @@ class Rect(Element, _FigureElement):
 
 
 @dataclass
-class Circle(Element, _FigureElement):
+class Circle(TransformableMixin, Element, _FigureElement):
     """
     https://developer.mozilla.org/en-US/docs/Web/SVG/Element/circle
     """
@@ -376,7 +382,7 @@ class Circle(Element, _FigureElement):
 
 
 @dataclass
-class Ellipse(Element, _FigureElement):
+class Ellipse(TransformableMixin, Element, _FigureElement):
     """
     https://developer.mozilla.org/en-US/docs/Web/SVG/Element/ellipse
     """
@@ -395,7 +401,7 @@ class Ellipse(Element, _FigureElement):
 
 
 @dataclass
-class Line(Element, _FigureElement):
+class Line(TransformableMixin, Element, _FigureElement):
     """
     https://developer.mozilla.org/en-US/docs/Web/SVG/Element/line
     """
@@ -413,7 +419,7 @@ class Line(Element, _FigureElement):
 
 
 @dataclass
-class Polyline(Element, _FigureElement):
+class Polyline(TransformableMixin, Element, _FigureElement):
     """
     https://developer.mozilla.org/en-US/docs/Web/SVG/Element/polyline
     """
@@ -433,7 +439,7 @@ class Polyline(Element, _FigureElement):
 
 
 @dataclass
-class Polygon(Element, _FigureElement):
+class Polygon(TransformableMixin, Element, _FigureElement):
     """
     https://developer.mozilla.org/en-US/docs/Web/SVG/Element/polygon
     """
@@ -469,7 +475,7 @@ class _TextElement(
 
 
 @dataclass
-class Text(Element, _TextElement):
+class Text(TransformableMixin, Element, _TextElement):
     """The SVG <text> element draws a graphics element consisting of text.
 
     It's possible to apply a gradient, pattern, clipping path, mask, or filter to <text>,
@@ -659,7 +665,7 @@ class Pattern(Element, m.Color, m.GraphicsElementEvents, m.Graphics):
 
 
 @dataclass
-class ClipPath(Element, m.Color, m.Graphics):
+class ClipPath(TransformableMixin, Element, m.Color, m.Graphics):
     """
     https://developer.mozilla.org/en-US/docs/Web/SVG/Element/clipPath
     """
@@ -673,7 +679,7 @@ class ClipPath(Element, m.Color, m.Graphics):
 
 
 @dataclass
-class Mask(Element, m.Color, m.Graphics):
+class Mask(TransformableMixin, Element, m.Color, m.Graphics):
     """
     https://developer.mozilla.org/en-US/docs/Web/SVG/Element/mask
     """
@@ -692,7 +698,7 @@ class Mask(Element, m.Color, m.Graphics):
 
 
 @dataclass
-class A(Element, m.Color, m.GraphicsElementEvents, m.Graphics):
+class A(TransformableMixin, Element, m.Color, m.GraphicsElementEvents, m.Graphics):
     """
     https://developer.mozilla.org/en-US/docs/Web/SVG/Element/a
     """
@@ -804,7 +810,7 @@ class Metadata(Element, m.GraphicsElementEvents):
 
 
 @dataclass
-class ForeignObject(Element, m.Color, m.GraphicsElementEvents, m.Graphics):
+class ForeignObject(TransformableMixin, Element, m.Color, m.GraphicsElementEvents, m.Graphics):
     """
     https://developer.mozilla.org/en-US/docs/Web/SVG/Element/foreignObject
     """
@@ -823,7 +829,7 @@ class ForeignObject(Element, m.Color, m.GraphicsElementEvents, m.Graphics):
 
 
 @dataclass
-class Use(Element, m.GraphicsElementEvents, m.Color, m.Graphics, m.FillStroke):
+class Use(TransformableMixin, Element, m.GraphicsElementEvents, m.Color, m.Graphics, m.FillStroke):
     """
     https://developer.mozilla.org/en-US/docs/Web/SVG/Element/use
     """

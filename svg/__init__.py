@@ -1,5 +1,6 @@
 """SVG drawing library
 """
+from ._affine import Affine
 from ._filters import (
     FeBlend, FeColorMatrix, FeComponentTransfer, FeComposite, FeConvolveMatrix,
     FeDiffuseLighting, FeDisplacementMap, FeDistantLight, FeDropShadow,
@@ -7,7 +8,11 @@ from ._filters import (
     FeMerge, FeMergeNode, FeMorphology, FeOffset, FePointLight,
     FeSpecularLighting, FeSpotLight, FeTile, FeTurbulence, Filter,
 )
-from ._helpers import escape, mm, px
+from ._geometry import (
+    BBox, RasterImage, document_bbox, element_bbox, element_ctm, flatten_path,
+    iter_ctms, pixel_hash, rasterize, root_viewport, viewbox_matrix,
+)
+from ._helpers import escape, mm, percent, pt, px
 from ._path import (
     Arc, ArcRel, C, ClosePath, CubicBezier, CubicBezierRel, H,
     HorizontalLineTo, HorizontalLineToRel, L, LineTo, LineToRel, M, MoveTo,
@@ -17,13 +22,15 @@ from ._path import (
     h, l, m, q, s, t, v,
 )
 from ._transforms import (
-    Matrix, Rotate, Scale, SkewX, SkewY, Transform, Translate,
+    Matrix, Rotate, Scale, SkewX, SkewY, Transform, TransformableMixin,
+    TransformList, Translate,
 )
 from ._types import (
-    Length, PreserveAspectRatio, ViewBoxSpec,
-    TimeBezierPoint, SyncbaseValue, EventValue, RepeatValue, AccessKeyValue,
-    AnimationTimingEvent, Point,
+    AccessKeyValue, AnimationTimingEvent, EventValue, Length, Point,
+    PreserveAspectRatio, RepeatValue, SyncbaseValue, TimeBezierPoint,
+    ViewBoxSpec,
 )
+from ._units import PX_PER_UNIT, to_px, viewport_from_lengths
 from .elements import (
     SVG, A, Animate, AnimateMotion, AnimateTransform, Circle, ClipPath,
     ColorProfile, DefinitionSrc, Defs, Desc, Element, Ellipse, ForeignObject,
@@ -31,6 +38,7 @@ from .elements import (
     Pattern, Polygon, Polyline, RadialGradient, Rect, Script, Set, Stop, Style,
     Switch, Symbol, Text, TextPath, Title, TSpan, Use, View,
 )
+
 
 SemicolonSeparatedList = list
 """
@@ -44,6 +52,8 @@ __all__ = [
     'escape',
     'mm',
     'px',
+    'pt',
+    'percent',
 
     # elements
     'Element',
@@ -118,12 +128,31 @@ __all__ = [
 
     # transforms
     'Transform',
+    'TransformList',
+    'TransformableMixin',
     'Matrix',
     'Translate',
     'Scale',
     'Rotate',
     'SkewX',
     'SkewY',
+
+    # geometry pipeline (units, matrices, bbox, pixels)
+    'Affine',
+    'BBox',
+    'RasterImage',
+    'PX_PER_UNIT',
+    'to_px',
+    'viewport_from_lengths',
+    'viewbox_matrix',
+    'root_viewport',
+    'iter_ctms',
+    'element_ctm',
+    'element_bbox',
+    'document_bbox',
+    'flatten_path',
+    'rasterize',
+    'pixel_hash',
 
     # path data
     'PathData',
